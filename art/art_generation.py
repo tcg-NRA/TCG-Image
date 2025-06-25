@@ -36,8 +36,11 @@ def main():
         print(f"✗ Couldn’t find src/ at {src_dir}")
         sys.exit(1)
 
-    # Recursively find PNGs
-    pngs = sorted(src_dir.rglob("*.png"))
+    # Recursively find PNGs, but skip any under an "unused" folder
+    pngs = sorted(
+        p for p in src_dir.rglob("*.png")
+        if "unused" not in p.relative_to(src_dir).parts
+    )
     if not pngs:
         print(f"✗ No PNGs found in {src_dir}")
         sys.exit(1)
